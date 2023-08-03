@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alunos</title>
+</head>
+<body>
+
+<!-- 
+    Complete este programa para enviar os dados via AJAX para um arquivo PHP 
+    Em seguida faça o PHP retornar um "echo" para a função JavaScript e insira
+    uma nova linha na tabela.
+    PASSO 1) Criar o onclick NO LUGAR CERTO
+    PASSO 2) Criar a função Javascript e enviar os dados para o PHP
+    PASSO 3) Criar o PHP conforme exemplos anteriores
+    PASSO 4) Usar o exemplo do Google DOCs de como preencher uma tabela via AJAX.
+--> 
+
+    <form action="" method="post" id="form1">
+        DIGITE A MATRÍCULA: <input type="text" name="matricula">
+        <br>  <br>
+        DIGITE O NOME: <input type="text" name="nome">
+        <br>   <br>
+        
+        <button type="button" onclick="inserirAluno()">
+           Inserir
+        </button>
+
+    </form>
+
+    <br> <br>
+
+    <table align="center" width="400px" border="1" id="tabela1">
+        <tr>
+            <td> MATRÍCULA </td>  <td> NOME </td>
+        </tr>
+    </table>
+
+    <script>
+        function inserirAluno() {
+            // Get the form data
+            const form = document.getElementById("form1");
+            const formData = new FormData(form);
+
+            // Send data via AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "processar.php", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    // Process the response and insert a new row into the table
+                    const response = xhr.responseText;
+                    const tabela = document.getElementById("tabela1");
+                    const newRow = tabela.insertRow(-1);
+                    const data = JSON.parse(response);
+                    const matriculaCell = newRow.insertCell(0);
+                    const nomeCell = newRow.insertCell(1);
+                    matriculaCell.innerHTML = data.matricula;
+                    nomeCell.innerHTML = data.nome;
+                }
+            };
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
